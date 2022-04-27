@@ -12,3 +12,5 @@ REQUEST_HEADERS = {
 # To avoid the application waiting for the request forever since request are blocking in nature until there's a response
 # from the destination server
 REQUEST_TIMEOUT = 10  # secs
+
+LRU_MAX_ITEMS = int(os.getenv('LRU_MAX_ITEMS', 10))
