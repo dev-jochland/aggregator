@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import lru_cache
 from typing import List, Dict
 
-from settings import LRU_MAX_ITEMS
+from settings import LRU_MAX_SIZE
 
 
 class News(ABC):
@@ -22,7 +22,7 @@ class News(ABC):
         :param query_param:
         :return: json news response data
         """
-        raise NotImplementedError
+        raise NotImplementedError  # redundant
 
     @abstractmethod
     def resolve_news_data(self, request_data: Dict[str, object]) -> List[Dict[str, str]]:  # Generic JSON structure
@@ -30,7 +30,7 @@ class News(ABC):
         :param request_data:
         :return: Array of news object with defined key:value
         """
-        raise NotImplementedError
+        raise NotImplementedError  # redundant
 
 
 class NewsManager:
@@ -47,7 +47,7 @@ class NewsManager:
 
             self.sources.append(Klass())  # Register and get News Source Instance here
 
-    @lru_cache(maxsize=LRU_MAX_ITEMS)
+    @lru_cache(maxsize=LRU_MAX_SIZE)
     def aggregate_news(self, news_search_query: str = None):
         """
         Concurrently aggregates news from provided news source while updating LRU cache by the search_news_query

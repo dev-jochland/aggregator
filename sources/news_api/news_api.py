@@ -1,4 +1,3 @@
-from abc import ABC
 from enum import Enum
 from typing import Dict, List
 
@@ -14,11 +13,11 @@ class ResponseField(Enum):
     """
     Dynamically gets required fields from news response
     """
-    HEADLINE = 'title'
-    LINK = 'url'
+    NEWS_HEADLINE = 'title'
+    NEWS_LINK = 'url'
 
 
-class NewsApi(News, ABC):  # ABC to indicate the superclass is an abstract class
+class NewsApi(News):
     BASE_NEWS_URL = 'https://newsapi.org/v2/everything?'
 
     def __init__(self, api_key=NEWSAPI_API_KEY):
@@ -52,8 +51,8 @@ class NewsApi(News, ABC):  # ABC to indicate the superclass is an abstract class
         news_data = request_data.get('articles', {})  # In case of None, declare and empty dict
         return [
             {
-                'headline': news.get(ResponseField.HEADLINE.value),
-                'link': news.get(ResponseField.LINK.value),
+                'headline': news.get(ResponseField.NEWS_HEADLINE.value),
+                'link': news.get(ResponseField.NEWS_LINK.value),
                 'source': self.source
             }
             for news in news_data

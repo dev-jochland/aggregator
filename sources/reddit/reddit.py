@@ -1,4 +1,3 @@
-from abc import ABC
 from enum import Enum
 from typing import Dict, List
 
@@ -13,11 +12,11 @@ class ResponseField(Enum):
     """
     Dynamically gets required fields from news response
     """
-    HEADLINE = 'title'
-    LINK = 'url_overridden_by_dest'
+    NEWS_HEADLINE = 'title'
+    NEWS_LINK = 'url_overridden_by_dest'
 
 
-class Reddit(News, ABC):  # ABC to indicate the superclass is an abstract class
+class Reddit(News):
     BASE_NEWS_URL = 'https://www.reddit.com/r/news'
 
     def __init__(self):
@@ -27,7 +26,8 @@ class Reddit(News, ABC):  # ABC to indicate the superclass is an abstract class
         news_url = f'{self.BASE_NEWS_URL}/.json' if query_param is None else f'{self.BASE_NEWS_URL}/search.json?' \
                                                                              f'q={query_param}&restrict_sr=1 '
         try:
-            response = requests.get(news_url, timeout=REQUEST_TIMEOUT, headers=REQUEST_HEADERS)
+            response = requests.get(news_url, timeout=REQUEST_TIMEOUT, headers=REQUEST_HEADERS)  # Request headers to
+            # avoid: "429 Client Error: Too Many Requests for url: https://www.reddit.com/r/news/.json"
             response.raise_for_status()
         except (Timeout, HTTPError, ConnectionError) as err:
             raise err
@@ -41,8 +41,8 @@ class Reddit(News, ABC):  # ABC to indicate the superclass is an abstract class
         news_data = request_data.get('data', {}).get('children')  # In case of None, declare and empty dict
         return [
             {
-                'headline': news.get('data').get(ResponseField.HEADLINE.value),
-                'link': news.get('data').get(ResponseField.LINK.value),
+                'headline': news.get('data').get(ResponseField.NEWS_HEADLINE.value),
+                'link': news.get('data').get(ResponseField.NEWS_LINK.value),
                 'source': self.source
             }
             for news in news_data
