@@ -21,7 +21,7 @@ Assumptions for this project:
 - Clone the project to your local machine by opening your terminal and 
   type:
 ```python
-https://github.com/dev-jochland/aggregator.git
+git clone https://github.com/dev-jochland/aggregator.git
 ```
 
 - While still in your terminal where you originally cloned the project, 
