@@ -94,11 +94,12 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 
 ```
-```NOTE``` You need to have Postman installed locally to try out this next step.
-- To try out the different endpoints available for the different type of users, you can access the [postman](https://documenter.getpostman.com/view/11396719/UyrEhvCL) documentation [here](https://documenter.getpostman.com/view/11396719/UyrEhvCL).
+```NOTE``` You need to have Postman installed locally to be able to view the response from the provided endpoints.
+- To try out the different endpoints available, you can access the [postman](https://documenter.getpostman.com/view/11396719/UyrEhvCL) documentation [here](https://documenter.getpostman.com/view/11396719/UyrEhvCL).
 
 ## RUNNING THE TEST
-- To run the test, type the command below in your terminal, ensure you have your internet available to avoid 500 server error
+- While still in the original terminal the project was cloned into, ensure you have internet available to avoid 500 server error and also you must have stopped the server running by typing ```ctrl + c```
+- Then type the command below to run the test
 ```python
 python -m pytest --cov=.
 ```
