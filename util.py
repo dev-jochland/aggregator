@@ -34,18 +34,20 @@ class News(ABC):
 
 
 class NewsManager:
-    """
-    This class aggregates news from all new source and also creates provided news source instance from the provided
-    path name and news source class in the new_sources_dict
-    """
     def __init__(self, news_source: Dict[str, str]):
+        """Registers class instance from news_source_dict into this manager class"""
         self.sources = []
 
         for source, path in news_source.items():
-            module = importlib.import_module(path)
-            Klass = getattr(module, source)
 
-            self.sources.append(Klass())  # Register and get News Source Instance here
+            module = importlib.import_module(path)  # Relative import into path's __init__.py, to allow me define & be
+            # in control of the news source class I want registered in this manager. That way, results can be consistent
+
+            Klass = getattr(module, source)  # Get the default class provided in the path's __init__.py, since an
+            # attribute error would have been thrown, for the fact that I want to control the class being injected into
+            # the manager
+
+            self.sources.append(Klass())  # Register News Source Class Instance here for the manager class
 
     @lru_cache(maxsize=LRU_MAX_SIZE)
     def aggregate_news(self, news_search_query: str = None):
@@ -57,10 +59,17 @@ class NewsManager:
         news = []
         resource_threads = []
 
-        with ThreadPoolExecutor(max_workers=len(self.sources)) as executor:
+        # ThreadPoolExecutor utility: Because it's best for I/O-bound operation (web request/crawler) in a Python Thread
+        # Dynamic max_workers to dynamically create the required number of concurrent threads that can process jobs
+        # based on news_source_dict injected at server start
+        with ThreadPoolExecutor(max_workers=len(self.sources)) as executor:  # with: auto cleans up thread on completion
             for source in self.sources:
+
+                # Saves Future instance created on each submit call into resource_threads list
                 resource_threads.append(executor.submit(source.get_news_data, news_search_query))
 
-        for task in as_completed(resource_threads):
+        for task in as_completed(resource_threads):  # as_completed waits for each Future get_news_data call to complete
+
+            # Aggregates list of all news from the result()-Future instance into a single news list
             news.extend(task.result())
         return news

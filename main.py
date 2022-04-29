@@ -6,13 +6,19 @@ from exceptions import InvalidApiKey, ApiKeyMissing
 from util import NewsManager
 load_dotenv()
 
-
+"""
+Add other news source to this dictionary ({'class_name': 'sources.package_name}) below by properly defining a package
+for it in the "sources" folder and implementing the abstract methods from class News(utils.py) in your
+added news source module, also don't forget to import the class into your package __init__.py, this way, you are sure 
+that the right class is being imported into the program.
+"""
 news_source = {
     'NewsApi': 'sources.news_api',
     'Reddit': 'sources.reddit'
 }
 
-news_manager = NewsManager(news_source)
+news_manager = NewsManager(news_source)  # The above news source dict is injected via the news manager into the app at
+# server start and not when an api call is made.
 
 app = FastAPI()
 
