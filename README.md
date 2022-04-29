@@ -98,3 +98,9 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 - To try out the different endpoints available for the different type of users, you can access the [postman](https://documenter.getpostman.com/view/11396719/UyrEhvCL) documentation [here](https://documenter.getpostman.com/view/11396719/UyrEhvCL).
 
 ## RUNNING THE TEST
+- To run the test, type the command below in your terminal, ensure you have your internet available to avoid 500 server error
+```python
+python -m pytest --cov=.
+```
+
+```NOTE: TEST COVERAGE = 85%```

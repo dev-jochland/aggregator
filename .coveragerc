@@ -1,0 +1,15 @@
+[run]
+source = .
+omit =
+    *settings.py,
+    *tests/*,
+    *exceptions.py,
+    *venv/*,
+    *__init__*,
+    */__pycache__/*,
+    */site-packages/*,
+
+
+[report]
+show_missing = True
+
